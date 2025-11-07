@@ -1,4 +1,4 @@
-import IngredientDetector from "./IngredientDetector";
+import IngredientDetector from "./IngredientDetector.tsx";
 
 function App() {
   return (
