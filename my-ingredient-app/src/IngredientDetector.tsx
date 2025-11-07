@@ -1,66 +1,119 @@
-import React, { useRef, useEffect } from "react";
-import * as cocoSsd from "@tensorflow-models/coco-ssd";
-import "@tensorflow/tfjs";
+import React, { useEffect, useRef, useState } from "react";
+import * as tmImage from "@teachablemachine/image";
 
-interface Prediction {
-  class: string;
-  score: number;
-  bbox: [number, number, number, number];
-}
+type TMImageModel = {
+  predict: (image: HTMLCanvasElement | HTMLVideoElement) => Promise<
+    { className: string; probability: number }[]
+  >;
+  getTotalClasses: () => number;
+};
 
-export default function IngredientDetector() {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+type TMWebcam = {
+  canvas: HTMLCanvasElement;
+  setup: () => Promise<void>;
+  play: () => Promise<void>;
+  stop: () => void;
+  update: () => void;
+};
+
+export default function TeachableDetector() {
+  const webcamContainer = useRef<HTMLDivElement | null>(null);
+  const labelContainer = useRef<HTMLDivElement | null>(null);
+  const [started, setStarted] = useState(false);
+
+  const MODEL_URL = "/foodDetector/"; 
 
   useEffect(() => {
-    const startCamera = async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        if (videoRef.current) {
-          await new Promise<void>(resolve => {
-            videoRef.current!.onloadedmetadata = () => resolve();
-          });
-        }
+    if (!started) return;
 
+    let model: TMImageModel;
+    let webcam: TMWebcam;
+    let maxPredictions: number;
+
+    const init = async () => {
+      const modelURL = MODEL_URL + "model.json";
+      const metadataURL = MODEL_URL + "metadata.json";
+
+      model = await tmImage.load(modelURL, metadataURL);
+      maxPredictions = model.getTotalClasses();
+
+      webcam = new tmImage.Webcam(200, 200, true);
+      await webcam.setup();
+      await webcam.play();
+
+      if (webcamContainer.current) {
+        webcamContainer.current.innerHTML = "";
+        webcamContainer.current.appendChild(webcam.canvas);
       }
-    };
 
-    const runModel = async () => {
-      const model = await cocoSsd.load();
+      if (labelContainer.current) {
+        labelContainer.current.innerHTML = "";
+        for (let i = 0; i < maxPredictions; i++) {
+          labelContainer.current.appendChild(document.createElement("div"));
+        }
+      }
 
-      const detect = async () => {
-        if (!videoRef.current || !canvasRef.current) return;
-
-        const predictions: Prediction[] = await model.detect(videoRef.current);
-        const ctx = canvasRef.current.getContext("2d");
-        if (!ctx) return;
-
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        ctx.drawImage(videoRef.current, 0, 0, 640, 480);
-
-        predictions.forEach(p => {
-          const [x, y, w, h] = p.bbox;
-          ctx.strokeStyle = "lime";
-          ctx.lineWidth = 2;
-          ctx.strokeRect(x, y, w, h);
-          ctx.fillStyle = "lime";
-          ctx.fillText(`${p.class} (${Math.round(p.score * 100)}%)`, x, y > 10 ? y - 5 : 10);
-        });
-
-        requestAnimationFrame(detect);
+      const loop = async () => {
+        webcam.update();
+        await predict();
+        window.requestAnimationFrame(loop);
       };
-
-      detect();
+      loop();
     };
 
-    startCamera().then(runModel);
-  }, []);
+    const predict = async () => {
+      const prediction = await model.predict(webcam.canvas);
+      if (!labelContainer.current) return;
+
+      const filtered = prediction.filter(
+        p => p.probability >= 0.7 && p.className.toLowerCase() !== "background"
+      );
+
+      if (filtered.length === 0) {
+        console.log("No food detected 🍽️");
+      }
+
+      // sort by descending probability
+      const sortedPredictions = [...prediction].sort(
+        (a, b) => b.probability - a.probability
+      );
+
+      // Optional: clear the label container each frame
+      labelContainer.current.innerHTML = "";
+
+      sortedPredictions.forEach(p => {
+        if (p.probability >= 0.7) {
+          const div = document.createElement("div");
+          div.textContent = `${p.className}: ${(p.probability * 100).toFixed(1)}% ✅`;
+          labelContainer.current!.appendChild(div);
+        }
+      });
+
+      // Or, if you only want to show the single highest prediction:
+      // const top = sortedPredictions[0];
+      // labelContainer.current.innerHTML =
+      //   `${top.className}: ${(top.probability * 100).toFixed(1)}% ✅`;
+    };
+
+
+    init();
+
+    return () => {
+      if (webcam) webcam.stop();
+    };
+  }, [started]);
 
   return (
-    <div className="relative w-[640px] h-[480px]">
-      <video ref={videoRef} autoPlay playsInline className="absolute left-0 top-0" width="640" height="480" />
-      <canvas ref={canvasRef} className="absolute left-0 top-0" width="640" height="480" />
+    <div className="flex flex-col items-center space-y-4">
+      <h2 className="text-lg font-semibold">Teachable Machine Image Model</h2>
+      <button
+        onClick={() => setStarted(true)}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Start
+      </button>
+      <div ref={webcamContainer}></div>
+      <div ref={labelContainer}></div>
     </div>
   );
 }
