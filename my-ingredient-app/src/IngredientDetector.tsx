@@ -35,11 +35,31 @@ export default function IngredientDetector() {
   const MODEL_URL = "/foodDetector/";
 
   const foodData: FoodData = {
+    "Caesar Salad": {
+      ingredients_per_serving: {
+        Spinach: { quantity: 1, unit: "piece" },
+        Onions: { quantity: 1, unit: "large" },
+        Garlic: { quantity: 1, unit: "large" },
+      },
+      servings: 1,
+      average_price: 5.99,
+      recommended_addons: ["Cheese", "Spinach", "Ketchup"],
+    },
     "Breakfast Sandwich": {
       ingredients_per_serving: {
-        Spinach: { quantity: 2, unit: "slices" },
-        Muffin: { quantity: 1, unit: "piece" },
-        Egg: { quantity: 1, unit: "large" },
+        Sausage: { quantity: 1, unit: "piece" },
+        Bread: { quantity: 1, unit: "large" },
+        Eggs: { quantity: 1, unit: "large" },
+      },
+      servings: 1,
+      average_price: 5.99,
+      recommended_addons: ["Cheese", "Spinach", "Ketchup"],
+    },
+    "Spaghetti and Meatballs": {
+      ingredients_per_serving: {
+        Sausage: { quantity: 1, unit: "piece" },
+        Spaghetti: { quantity: 1, unit: "large" },
+        Tomato: { quantity: 1, unit: "large" },
       },
       servings: 1,
       average_price: 5.99,
@@ -138,14 +158,26 @@ export default function IngredientDetector() {
                   console.log(`📬 Backend reply for "${trimmedItem}":`, data);
                   const reply = document.createElement("p");
 
-                  if (data.results?.length) {
-                    const match = data.results[0];
-                    reply.textContent = `Matched: ${match.product} | Popularity: ${match.popularity} | Add-ons: ${match.suggested_addons.join(", ")}`;
-                  } else {
-                    reply.textContent = `No match found for "${trimmedItem}"`;
-                  }
+if (data.results?.length) {
+  // Create a container for all backend matches
+  const multiReply = document.createElement("div");
+  multiReply.classList.add("backend-results");
 
-                  labelContainer.current!.appendChild(reply);
+  data.results.forEach((match: any, i: number) => {
+    const itemP = document.createElement("p");
+    const addons = match.suggested_addons?.length
+      ? match.suggested_addons.join(", ")
+      : "None";
+    itemP.textContent = `${i + 1}. ${match.product} | Popularity: ${match.popularity} | Add-ons: ${addons}`;
+    multiReply.appendChild(itemP);
+  });
+
+  labelContainer.current!.appendChild(multiReply);
+} else {
+  const noneP = document.createElement("p");
+  noneP.textContent = `No match found for "${trimmedItem}"`;
+  labelContainer.current!.appendChild(noneP);
+}
                 })
                 .catch((err) => {
                   console.error("🚫 Backend error:", err);

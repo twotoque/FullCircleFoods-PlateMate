@@ -28,7 +28,13 @@ app = Flask(__name__)
 CORS(app)
 
 def find_similar_names(query, product_list, cutoff=0.6):
-    return get_close_matches(query.lower(), [p.lower() for p in product_list], cutoff=cutoff)
+    query_lower = query.lower()
+    matches = [
+        p for p in product_list
+        if query_lower in p.lower() or query_lower in p.lower().replace("-", " ")
+    ]
+    fuzzy_matches = get_close_matches(query_lower, [p.lower() for p in product_list], cutoff=cutoff)
+    return list(set(matches + fuzzy_matches))  # combine exact+fuzzy
 
 def get_similar_products(query, top_k=5):
     if query not in product_to_id:
