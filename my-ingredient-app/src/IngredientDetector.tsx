@@ -16,27 +16,48 @@ type TMWebcam = {
   update: () => void;
 };
 
-export default function TeachableDetector() {
+type FoodData = {
+  [foodName: string]: {
+    ingredients_per_serving: Record<string, { quantity: number; unit: string }>;
+    servings: number;
+    average_price: number;
+    recommended_addons: string[];
+  };
+};
+
+export default function IngredientDetector() {
   const webcamContainer = useRef<HTMLDivElement | null>(null);
   const labelContainer = useRef<HTMLDivElement | null>(null);
   const [started, setStarted] = useState(false);
+  const lastAPICall = useRef<number>(0);
+  const lastPrediction = useRef<string | null>(null);
 
-  const MODEL_URL = "/foodDetector/"; 
+  const MODEL_URL = "/foodDetector/";
+
+  const foodData: FoodData = {
+    "Breakfast Sandwich": {
+      ingredients_per_serving: {
+        Spinach: { quantity: 2, unit: "slices" },
+        Muffin: { quantity: 1, unit: "piece" },
+        Egg: { quantity: 1, unit: "large" },
+      },
+      servings: 1,
+      average_price: 5.99,
+      recommended_addons: ["Cheese", "Spinach", "Ketchup"],
+    },
+  };
 
   useEffect(() => {
     if (!started) return;
 
     let model: TMImageModel;
     let webcam: TMWebcam;
-    let maxPredictions: number;
 
     const init = async () => {
       const modelURL = MODEL_URL + "model.json";
       const metadataURL = MODEL_URL + "metadata.json";
 
       model = await tmImage.load(modelURL, metadataURL);
-      maxPredictions = model.getTotalClasses();
-
       webcam = new tmImage.Webcam(200, 200, true);
       await webcam.setup();
       await webcam.play();
@@ -44,13 +65,6 @@ export default function TeachableDetector() {
       if (webcamContainer.current) {
         webcamContainer.current.innerHTML = "";
         webcamContainer.current.appendChild(webcam.canvas);
-      }
-
-      if (labelContainer.current) {
-        labelContainer.current.innerHTML = "";
-        for (let i = 0; i < maxPredictions; i++) {
-          labelContainer.current.appendChild(document.createElement("div"));
-        }
       }
 
       const loop = async () => {
@@ -65,36 +79,94 @@ export default function TeachableDetector() {
       const prediction = await model.predict(webcam.canvas);
       if (!labelContainer.current) return;
 
-      const filtered = prediction.filter(
-        p => p.probability >= 0.7 && p.className.toLowerCase() !== "background"
-      );
-
-      if (filtered.length === 0) {
-        console.log("No food detected 🍽️");
-      }
-
-      // sort by descending probability
       const sortedPredictions = [...prediction].sort(
         (a, b) => b.probability - a.probability
       );
+      const top = sortedPredictions[0];
+      if (!top || top.probability < 0.7) return;
 
-      // Optional: clear the label container each frame
+      const foodName = top.className.trim();
+      const confidence = (top.probability * 100).toFixed(1);
+
+      // 🚫 Skip redundant predictions
+      if (lastPrediction.current === foodName) return;
+      lastPrediction.current = foodName;
+
+      // Clear only once per new detection
       labelContainer.current.innerHTML = "";
 
-      sortedPredictions.forEach(p => {
-        if (p.probability >= 0.7) {
-          const div = document.createElement("div");
-          div.textContent = `${p.className}: ${(p.probability * 100).toFixed(1)}% ✅`;
-          labelContainer.current!.appendChild(div);
+      const p1 = document.createElement("p");
+      p1.textContent = `${foodName}: ${confidence}% ✅`;
+      labelContainer.current!.appendChild(p1);
+
+      const foodInfo = Object.entries(foodData).find(
+        ([key]) => key.toLowerCase() === foodName.toLowerCase()
+      )?.[1];
+
+      if (foodInfo) {
+        const ingrList = Object.entries(foodInfo.ingredients_per_serving)
+          .map(
+            ([name, details]) => `${name} (${details.quantity} ${details.unit})`
+          )
+          .join(", ");
+
+        const p2 = document.createElement("p");
+        p2.textContent = `Ingredients: ${ingrList}`;
+        labelContainer.current!.appendChild(p2);
+
+        const p3 = document.createElement("p");
+        p3.textContent = `Add-ons: ${foodInfo.recommended_addons.join(", ")}`;
+        labelContainer.current!.appendChild(p3);
+
+        const now = Date.now();
+        if (now - lastAPICall.current > 2000) {
+          lastAPICall.current = now;
+
+          const ingredients = Object.keys(foodInfo.ingredients_per_serving);
+          for (const item of ingredients) {
+            const trimmedItem = item.trim();
+            console.log(`📤 Querying backend for "${trimmedItem}"`);
+
+            try {
+              fetch("http://127.0.0.1:5050/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query: trimmedItem }),
+              })
+                .then((r) => r.json())
+                .then((data) => {
+                  console.log(`📬 Backend reply for "${trimmedItem}":`, data);
+                  const reply = document.createElement("p");
+
+                  if (data.results?.length) {
+                    const match = data.results[0];
+                    reply.textContent = `Matched: ${match.product} | Popularity: ${match.popularity} | Add-ons: ${match.suggested_addons.join(", ")}`;
+                  } else {
+                    reply.textContent = `No match found for "${trimmedItem}"`;
+                  }
+
+                  labelContainer.current!.appendChild(reply);
+                })
+                .catch((err) => {
+                  console.error("🚫 Backend error:", err);
+                  const errorP = document.createElement("p");
+                  errorP.textContent = `Backend error: ${err}`;
+                  labelContainer.current!.appendChild(errorP);
+                });
+            } catch (err) {
+              console.error("⚠️ Could not send to backend:", err);
+              const errorP = document.createElement("p");
+              errorP.textContent = `Failed to send request: ${err}`;
+              labelContainer.current!.appendChild(errorP);
+            }
+          }
         }
-      });
-
-      // Or, if you only want to show the single highest prediction:
-      // const top = sortedPredictions[0];
-      // labelContainer.current.innerHTML =
-      //   `${top.className}: ${(top.probability * 100).toFixed(1)}% ✅`;
+      } else {
+        const noneP = document.createElement("p");
+        noneP.textContent = "⚠️ Not in foodData constant";
+        labelContainer.current!.appendChild(noneP);
+      }
     };
-
 
     init();
 
@@ -105,7 +177,7 @@ export default function TeachableDetector() {
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      <h2 className="text-lg font-semibold">Teachable Machine Image Model</h2>
+      <h2 className="text-lg font-semibold">🍳 Ingredient Detector</h2>
       <button
         onClick={() => setStarted(true)}
         className="bg-blue-500 text-white px-4 py-2 rounded"

@@ -1,0 +1,12 @@
+{
+  "Breakfast Sandwich": {
+    "ingredients_per_serving": {
+      "Ham": { "quantity": 2, "unit": "slices" },
+      "Muffin": { "quantity": 1, "unit": "piece" },
+      "Egg": { "quantity": 1, "unit": "large" }
+    },
+    "servings": 1,
+    "average_price": 5.99,
+    "recommended_addons": ["Cheese", "Spinach", "Ketchup"]
+  }
+}
