@@ -37,9 +37,9 @@ export default function IngredientDetector() {
   const foodData: FoodData = {
     "Caesar Salad": {
       ingredients_per_serving: {
-        Spinach: { quantity: 1, unit: "piece" },
-        Onions: { quantity: 1, unit: "large" },
-        Garlic: { quantity: 1, unit: "large" },
+        Spinach: { quantity: 30, unit: "grams" },
+        Onions: { quantity: 1, unit: "piece" },
+        Garlic: { quantity: 1, unit: "piece" },
       },
       servings: 1,
       average_price: 5.99,
@@ -48,8 +48,8 @@ export default function IngredientDetector() {
     "Breakfast Sandwich": {
       ingredients_per_serving: {
         Sausage: { quantity: 1, unit: "piece" },
-        Bread: { quantity: 1, unit: "large" },
-        Eggs: { quantity: 1, unit: "large" },
+        Bread: { quantity: 1, unit: "loaf" },
+        Eggs: { quantity: 1, unit: "eggs" },
       },
       servings: 1,
       average_price: 5.99,
@@ -57,9 +57,9 @@ export default function IngredientDetector() {
     },
     "Spaghetti and Meatballs": {
       ingredients_per_serving: {
-        Sausage: { quantity: 1, unit: "piece" },
-        Spaghetti: { quantity: 1, unit: "large" },
-        Tomato: { quantity: 1, unit: "large" },
+        Sausage: { quantity: 1, unit: "pieces" },
+        Spaghetti: { quantity: 250, unit: "grams" },
+        Tomato: { quantity: 1, unit: "tomatoes" },
       },
       servings: 1,
       average_price: 5.99,
