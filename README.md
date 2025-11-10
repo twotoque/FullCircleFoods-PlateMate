@@ -23,10 +23,23 @@ The backend is connected with Flask and Python and is defaulted to port 5050. Fr
 
 ### Prerequisites
 
-- Node.js >= 14.x
-- Python >= 3.8
+
+- Python 3.11 
+- Node.js 14.x (for frontend build tools and package management)
 - npm or yarn
 - pip
+
+#### Python packages
+
+- `flask`
+  - `flask-cors` 
+- `tensorflow`
+  - Includes `keras`
+- `pandas` 
+- `numpy`
+
+For data visualizations
+- `matplotlib.pyplot`
 
 ### 1. Clone the Repository
 
