@@ -109,10 +109,10 @@ Transaction ID,Date,Customer,Location,Amount
 
 ### products_fake.csv
 ```csv
-Transaction ID,Product ID,Product Description,Zero-waste?
-0000a,00001,Spinach,yes
-0000a,00002,Garlic,no
-0000b,00003,Carrots,no
+Product ID,Product Description,Category,Subcategory,Zero-waste?,Transaction ID
+00001,"Spinach",Cooler,Hummus,zero-waste,0000a
+00002,"Garlic",Fresh,Salad,,0000a
+00003,"Carrots",Produce,Greens,zero-waste,0000b
 ```
 This tells us that
 * `0000a` was a transaction costing 15.99 that contained Spinach and Garlic
