@@ -1,5 +1,9 @@
 # PlateMate - Smart Ingredient Detector
-A real-time food recognition system that identifies dishes through your webcam and recommends relevant grocery products using machine learning. Built for the Conestoga Experience Ventures 2025 by the Wilfrid Laurier University Start-Up Lab. 
+![PlateMate screenshot](https://raw.githubusercontent.com/twotoque/FullCircleFoods-PlateMate/refs/heads/main/platemate.png)
+
+A real-time food recognition system that identifies dishes through your webcam and recommends relevant grocery products using machine learning. Built for the Conestoga Experience Ventures Hackathon 2025 by the Wilfrid Laurier University Start-Up Lab. 
+
+Video of it in action [here](https://www.youtube.com/watch?v=yzyTDCGGI6c).
 # Overview
 PlateMate uses computer vision to detect food items and provides intelligent product recommendations from transaction data. 
 * Real-time food detection via webcam 
