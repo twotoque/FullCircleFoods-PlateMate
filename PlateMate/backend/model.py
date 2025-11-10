@@ -1,32 +1,26 @@
-# model.py — Offline hybrid product recommender
-# Python 3.11 + tensorflow-macos + tensorflow-metal compatible
-
 import pandas as pd
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
 from difflib import get_close_matches
 
-# === Load CSVs ===
-transactions = pd.read_csv("transactions.csv")
-products = pd.read_csv("products.csv")
+transactions = pd.read_csv("transactions_fake.csv")
+products = pd.read_csv("products_fake.csv")
 
-# Merge on Transaction ID
 df = pd.merge(products, transactions, on="Transaction ID", how="left")
 
-# Normalize text
 df["Product Description"] = df["Product Description"].astype(str).str.lower().str.strip()
 
-# === Build (transaction, product) pairs ===
+# build (transaction, product) pairs 
 pairs = df[["Transaction ID", "Product Description"]].dropna()
 
-# === Encode products ===
+# encode products
 unique_products = pairs["Product Description"].unique()
 product_to_id = {p: i for i, p in enumerate(unique_products)}
 id_to_product = {i: p for p, i in product_to_id.items()}
 pairs["prod_id"] = pairs["Product Description"].map(product_to_id)
 
-# === Generate (input, context) training pairs ===
+# generate (input, context) training pair 
 inputs, contexts = [], []
 for tid, group in pairs.groupby("Transaction ID"):
     prods = group["prod_id"].tolist()
@@ -39,7 +33,7 @@ for tid, group in pairs.groupby("Transaction ID"):
 inputs = np.array(inputs)
 contexts = np.array(contexts)
 
-# === Define embedding model ===
+# Embedding model
 vocab_size = len(product_to_id)
 embed_dim = 8
 
@@ -58,8 +52,8 @@ model.compile(optimizer="adam", loss="binary_crossentropy")
 print("Training model")
 model.fit([inputs, contexts], np.ones(len(inputs)), epochs=7, verbose=1)
 
-model.save("product_matcher_offline.keras")
-print("Saved model as product_matcher_offline.keras")
+model.save("product_matcher_fake.keras")
+print("Saved model as product_matcher_fake.keras")
 
 popularity = pairs["Product Description"].value_counts()
 

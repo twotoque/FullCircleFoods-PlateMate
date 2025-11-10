@@ -1,0 +1,17 @@
+Transaction ID,Date,Customer,Location,Amount
+0000a,9/1/25,,in-store,4.99
+0000b,9/2/25,,online,12.47
+0000c,9/3/25,,in-store,9.79
+0000d,9/3/25,,in-store,13.25
+0000e,9/4/25,,online,7.89
+0000f,9/5/25,,pickup,10.49
+0000g,9/6/25,,in-store,8.39
+0000h,9/6/25,,in-store,11.75
+0000i,9/7/25,,online,9.99
+0000j,9/8/25,,pickup,7.15
+0000k,9/8/25,,in-store,10.85
+0000l,9/9/25,,in-store,11.29
+0000m,9/10/25,,online,8.55
+0000n,9/10/25,,pickup,7.40
+0000o,9/11/25,,in-store,9.60
+0000p,9/12/25,,in-store,8.99

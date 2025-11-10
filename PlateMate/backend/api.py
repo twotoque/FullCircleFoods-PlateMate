@@ -9,12 +9,12 @@ from difflib import get_close_matches
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 BASE_DIR = os.path.dirname(__file__)
-MODEL_PATH = os.path.join(BASE_DIR, "product_matcher_offline.keras")
+MODEL_PATH = os.path.join(BASE_DIR, "product_matcher_fake.keras")
 
 model = keras.models.load_model(MODEL_PATH)
 
-transactions = pd.read_csv(os.path.join(BASE_DIR, "transactions.csv"))
-products = pd.read_csv(os.path.join(BASE_DIR, "products.csv"))
+transactions = pd.read_csv(os.path.join(BASE_DIR, "transactions_fake.csv"))
+products = pd.read_csv(os.path.join(BASE_DIR, "products_fake.csv"))
 
 products["Product Description"] = products["Product Description"].astype(str).str.lower().str.strip()
 transactions["Transaction ID"] = transactions["Transaction ID"].astype(str).str.strip()

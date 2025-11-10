@@ -1,0 +1,56 @@
+Product ID,Product Description,Category,Subcategory,Zero-waste?,Transaction ID
+00001,"Classic Hummus, Waste Free",Cooler,Hummus,zero-waste,0000a
+00002,"Caesar Salad",Fresh,Salad,zero-waste,0000b
+00003,"Spinach Leaves, Fresh",Produce,Greens,zero-waste,0000b
+00004,"Onions, Yellow",Produce,Vegetables,,0000b
+00005,"Garlic Bulb",Produce,Vegetables,,0000b
+00006,"Breakfast Sandwich",Deli,Sandwiches,,0000c
+00007,"Sausage Link",Deli,Meats,,0000c
+00008,"Whole Wheat Bread Loaf",Bakery,Bread,zero-waste,0000c
+00009,"Free-Run Eggs, Local",Cooler,Eggs,zero-waste,0000c
+00010,"Spaghetti and Meatballs",Prepared,Meals,,0000d
+00011,"Spaghetti Pasta",Pantry,Pasta,zero-waste,0000d
+00012,"Tomatoes, Roma",Produce,Vegetables,,0000d
+00013,"Cheese Shredded, Mozzarella",Dairy,Cheese,zero-waste,0000e
+00014,"Organic Spinach Bag",Produce,Greens,zero-waste,0000e
+00015,"Tomato Ketchup Bottle",Pantry,Condiments,,0000e
+00016,"Greek Yogurt Cup",Dairy,Yogurt,,0000f
+00017,"Granola Mix, Refillable Jar",Pantry,Cereal,zero-waste,0000f
+00018,"Berry Medley, Frozen",Freezer,Fruit,zero-waste,0000f
+00019,"Veggie Wrap, Compostable Box",Deli,Wraps,zero-waste,0000g
+00020,"Falafel Balls",Deli,Appetizers,zero-waste,0000g
+00021,"Tahini Sauce Bottle",Pantry,Condiments,,0000g
+00022,"Chicken Stir Fry",Prepared,Meals,,0000h
+00023,"Broccoli Florets",Produce,Vegetables,zero-waste,0000h
+00024,"Carrots, Peeled",Produce,Vegetables,zero-waste,0000h
+00025,"Rice, Jasmine",Pantry,Grains,zero-waste,0000h
+00026,"Tofu Cubes",Cooler,Protein,zero-waste,0000i
+00027,"Vegetable Fried Rice",Prepared,Meals,,0000i
+00028,"Soy Sauce Dispenser",Pantry,Condiments,,0000i
+00029,"Lentil Soup, Glass Jar",Pantry,Soups,zero-waste,0000j
+00030,"Whole Grain Crackers",Pantry,Snacks,,0000j
+00031,"Tomato Bisque",Pantry,Soups,,0000j
+00032,"Mango Smoothie, Glass Bottle",Beverages,Juice,zero-waste,0000k
+00033,"Oat Milk, Refillable Bottle",Beverages,Milk Alternatives,zero-waste,0000k
+00034,"Peanut Butter, Bulk Jar",Pantry,Spreads,zero-waste,0000k
+00035,"Vegan Burrito",Prepared,Meals,,0000l
+00036,"Black Beans, Dry",Pantry,Legumes,zero-waste,0000l
+00037,"Avocado, Hass",Produce,Fruit,,0000l
+00038,"Lime, Fresh",Produce,Fruit,zero-waste,0000l
+00039,"Brown Rice Bowl",Prepared,Meals,zero-waste,0000m
+00040,"Edamame Pods",Freezer,Vegetables,zero-waste,0000m
+00041,"Sesame Dressing",Pantry,Condiments,,0000m
+00042,"Quinoa Salad, Waste Free",Fresh,Salad,zero-waste,0000n
+00043,"Chickpeas, Dried",Pantry,Legumes,zero-waste,0000n
+00044,"Cucumber, Local",Produce,Vegetables,zero-waste,0000n
+00045,"Lemon, Organic",Produce,Fruit,zero-waste,0000n
+00046,"Tuna Sandwich",Deli,Sandwiches,,0000o
+00047,"Canned Tuna, BPA-Free",Pantry,Seafood,zero-waste,0000o
+00048,"Lettuce Head",Produce,Greens,zero-waste,0000o
+00049,"Mayo, Compostable Jar",Pantry,Condiments,zero-waste,0000o
+00050,"Chicken Caesar Wrap",Deli,Wraps,,0000p
+00051,"Tomatoes from Manitoba",Produce,Vegetables,,0000d
+00052,"Tomatoes from British Columbia",Produce,Vegetables,,0000p
+00053,"Tomatoes from Nunavut",Produce,Vegetables,,0000p
+00054,"Mayo from Iowa",Pantry,Condiments,,0000p
+00055,"Cucumber from South Africa",Produce,Vegetables,,0000b
