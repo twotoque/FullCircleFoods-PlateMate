@@ -47,7 +47,7 @@ For data visualizations
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/platemate.git
+git clone https://github.com/twotoque/FullCircleFoods-PlateMate.git
 cd platemate
 ```
 
