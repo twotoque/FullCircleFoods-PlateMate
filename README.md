@@ -6,7 +6,6 @@ PlateMate uses computer vision to detect food items and provides intelligent pro
 * Smart product matching and recommendations based on co-purchase patterns
 * Pricing and zero-waste product highlighting
 
-## How it works
 PlateMate contains two machine learning models:
 1. **Food Classification Model (Google Teachable Machine):** Identifies dishes from webcam feed using image recognition. As an minimum viable product, it supports three dishes: caesar salads, spaghetti & meatballs, and breakfast sandwiches.  
 2. **Product Recommendation Model (TensorFlow + Keras):** Recommends related products using embedding-based similarity from past purchases. Transaction ID is used as a primary key to connect both the transaction and product tables.
@@ -98,7 +97,9 @@ The API will be available at `http://localhost:5050`.
 
 ## Data Requirements
 
-The system expects two CSV files in the backend directory. The Keras model and .csv files are **examples** and do not represent Full Circle Food's data. 
+The system expects two CSV files in the backend directory. 
+| The Keras model and .csv files provided here is **placeholder data** and do not represent Full Circle Food's data.  |
+|:-------------:|
 
 ### transactions_fake.csv
 ```csv
