@@ -84,10 +84,10 @@ pip install flask flask-cors tensorflow pandas numpy
 # Place transactions_fake.csv and products_fake.csv in the backend directory
 
 # Train the recommendation model
-python train_model.py
+python model.py
 
 # Start the Flask API server
-python app.py
+python api.py
 ```
 
 The API will be available at `http://localhost:5050`.
