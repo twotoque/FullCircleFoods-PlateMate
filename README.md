@@ -2,7 +2,13 @@
 A real-time food recognition system that identifies dishes through your webcam and recommends relevant grocery products using machine learning.
 # Overview
 PlateMate uses computer vision to detect food items and provides intelligent product recommendations from transaction data. 
+* Real-time food detection via webcam 
+* Smart product matching and recommendations based on co-purchase patterns
+* Pricing and zero-waste product highlighting
+
 ## How it works
 PlateMate contains two machine learning models:
 1. **Food Classification Model (Google Teachable Machine):** Identifies dishes from webcam feed using image recognition. As an minimum viable product, it supports three dishes: caesar salads, spaghetti & meatballs, and breakfast sandwiches.  
-2. **Product Recommendation Model (TensorFlow + Keras): ** Recommends related products using embedding-based similarity from past purchases. Transaction ID is used as a primary key to connect both the transaction and product tables. 
+2. **Product Recommendation Model (TensorFlow + Keras):** Recommends related products using embedding-based similarity from past purchases. Transaction ID is used as a primary key to connect both the transaction and product tables.
+
+The backend is connected with Flask and Python and is defaulted to port 5050. Frontend is made with React and Typescript. Meals are defined in the const foodData held in the IngredientDetector.tsx file. 
