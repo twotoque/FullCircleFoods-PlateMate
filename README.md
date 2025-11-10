@@ -165,7 +165,6 @@ Products frequently purchased together will have similar embeddings, enabling ac
   ]
 }
 ```
-
 ## Configuration
 
 ### Teachable Machine Model
@@ -186,6 +185,8 @@ const foodData: FoodData = {
   },
 };
 ```
+
+Footnote: ingredient pricing is found through the transaction info and may differ as the given csv files aggregate entire purchases. 
 
 ### Detection Settings
 - **Confidence Threshold**: Adjust `top.probability < 0.7` in the code for sensitivity
