@@ -102,9 +102,9 @@ The system expects two CSV files in the backend directory. The Keras model and .
 
 ### transactions_fake.csv
 ```csv
-Transaction ID,Amount,...
-0000a,15.99,...
-0000b,23.45,...
+Transaction ID,Date,Customer,Location,Amount
+0000a,9/1/25,,in-store,15.99
+0000b,9/1/25,,delivery,23.45
 ```
 
 ### products_fake.csv
